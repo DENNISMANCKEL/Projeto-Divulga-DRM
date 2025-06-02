@@ -1,118 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel Administrativo - Divulga DRM</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f4; }
-    h1 { text-align: center; color: #333; }
-    form, table { background: #fff; padding: 20px; border-radius: 8px; margin: 20px auto; width: 90%; max-width: 800px; }
-    input, textarea, select, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; }
-    button { background: #2a5d9f; color: white; border: none; cursor: pointer; }
-    table { border-collapse: collapse; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    .btn-remover { background: #d9534f; color: white; border: none; padding: 6px 10px; cursor: pointer; }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script>
-    const senhaCorreta = "Divulga1234";
-    const senha = prompt("Digite a senha para acessar o painel:");
-    if (senha !== senhaCorreta) {
-      alert("Senha incorreta. Acesso negado.");
-      window.location.href = "https://dennismanckel.github.io/Projeto-Divulga-DRM/";
+    const senhaCorreta = "drm2024adm"; // Troque pela sua senha real
+    const endpoint = "https://script.google.com/macros/s/AKfycbwEnqTXoXUqU-CzntgR0PqKYaNJd2X-75ML2kuvJ238H50cQu17cZ0jEDOXvKzHA49V8Q/exec"; // Cole aqui a URL do Web App
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const senha = prompt("Digite a senha para acessar o painel:");
+      if (senha !== senhaCorreta) {
+        alert("Senha incorreta!");
+        window.location.href = "https://www.google.com";
+        return;
+      }
+      carregarCargas();
+
+      document.getElementById("formCarga").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const dados = Object.fromEntries(new FormData(e.target).entries());
+
+        try {
+          const resposta = await fetch(endpoint, {
+            method: "POST",
+            body: JSON.stringify(dados),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+          if (!resposta.ok) throw new Error("Erro na requisição");
+          alert("Carga cadastrada com sucesso!");
+          e.target.reset();
+          carregarCargas();
+        } catch (erro) {
+          alert("Erro ao enviar: " + erro);
+        }
+      });
+    });
+
+    async function carregarCargas() {
+      try {
+        const resposta = await fetch(endpoint);
+        const cargas = await resposta.json();
+        const tbody = document.querySelector("#listaCargas tbody");
+        tbody.innerHTML = "";
+
+        cargas.forEach((carga, i) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${carga.origem}</td>
+            <td>${carga.destino}</td>
+            <td>${carga.veiculo}</td>
+            <td>${carga.tipo}</td>
+            <td>${carga.rastreado}</td>
+            <td>${carga.valor}</td>
+            <td>${carga.whatsapp}</td>
+            <td>${carga.observacao}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (erro) {
+        console.error("Erro ao carregar cargas:", erro);
+      }
     }
   </script>
 </head>
-<body>
-  <h1>Painel Administrativo - Divulga DRM</h1>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h1 class="mb-4">Painel Administrativo - Divulga DRM</h1>
+    <form id="formCarga" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Origem:</label>
+        <input type="text" name="origem" class="form-control" required />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Destino:</label>
+        <input type="text" name="destino" class="form-control" required />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Veículo:</label>
+        <input type="text" name="veiculo" class="form-control" required />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Tipo:</label>
+        <input type="text" name="tipo" class="form-control" required />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Rastreado (Sim/Não):</label>
+        <input type="text" name="rastreado" class="form-control" required />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Valor:</label>
+        <input type="text" name="valor" class="form-control" required />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">WhatsApp:</label>
+        <input type="text" name="whatsapp" class="form-control" required />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Observação:</label>
+        <textarea name="observacao" class="form-control"></textarea>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Cadastrar Carga</button>
+      </div>
+    </form>
 
-  <form id="formularioCarga">
-    <input type="text" id="origem" placeholder="Origem" required>
-    <input type="text" id="destino" placeholder="Destino" required>
-    <input type="text" id="veiculo" placeholder="Veículo" required>
-    <input type="text" id="tipo" placeholder="Tipo" required>
-    <select id="rastreado" required>
-      <option value="">Rastreado?</option>
-      <option value="Sim">Sim</option>
-      <option value="Não">Não</option>
-    </select>
-    <input type="text" id="valor" placeholder="Valor" required>
-    <input type="text" id="whatsapp" placeholder="WhatsApp" required>
-    <textarea id="observacao" placeholder="Observação"></textarea>
-    <button type="submit">Adicionar Carga</button>
-  </form>
+    <hr class="my-5">
 
-  <table id="tabelaCargas">
-    <thead>
-      <tr>
-        <th>Origem</th>
-        <th>Destino</th>
-        <th>Veículo</th>
-        <th>Tipo</th>
-        <th>Rastreado?</th>
-        <th>Valor</th>
-        <th>WhatsApp</th>
-        <th>Observação</th>
-        <th>Ação</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Cargas inseridas serão exibidas aqui -->
-    </tbody>
-  </table>
-
-  <script>
-    const form = document.getElementById("formularioCarga");
-    const tabela = document.getElementById("tabelaCargas").querySelector("tbody");
-
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwEnqTXoXUqU-CzntgR0PqKYaNJd2X-75ML2kuvJ238H50cQu17cZ0jEDOXvKzHA49V8Q/exec"; // Substitua por sua URL do Web App
-
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const dados = {
-        origem: origem.value,
-        destino: destino.value,
-        veiculo: veiculo.value,
-        tipo: tipo.value,
-        rastreado: rastreado.value,
-        valor: valor.value,
-        whatsapp: whatsapp.value,
-        observacao: observacao.value
-      };
-
-      fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(dados),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.text())
-      .then(msg => {
-        alert(msg);
-
-        const novaLinha = document.createElement("tr");
-        Object.values(dados).forEach(dado => {
-          const td = document.createElement("td");
-          td.textContent = dado;
-          novaLinha.appendChild(td);
-        });
-
-        const tdAcao = document.createElement("td");
-        const btnRemover = document.createElement("button");
-        btnRemover.textContent = "Remover";
-        btnRemover.className = "btn-remover";
-        btnRemover.onclick = () => novaLinha.remove();
-        tdAcao.appendChild(btnRemover);
-        novaLinha.appendChild(tdAcao);
-
-        tabela.appendChild(novaLinha);
-        form.reset();
-      })
-      .catch(error => alert("Erro ao enviar: " + error));
-    });
-  </script>
-
+    <h2>Lista de Cargas</h2>
+    <table class="table table-bordered" id="listaCargas">
+      <thead>
+        <tr>
+          <th>Origem</th>
+          <th>Destino</th>
+          <th>Veículo</th>
+          <th>Tipo</th>
+          <th>Rastreado</th>
+          <th>Valor</th>
+          <th>WhatsApp</th>
+          <th>Observação</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </body>
 </html>
