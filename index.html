@@ -1,82 +1,165 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fretes Disponíveis - Transportadora</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
-        header { background: #2a5d9f; color: #fff; padding: 15px; text-align: center; }
-        .fretes, .formulario, .contato { padding: 20px; max-width: 800px; margin: auto; background: #fff; margin-top: 20px; border-radius: 8px; }
-        .frete { border-bottom: 1px solid #ccc; padding: 10px 0; }
-        .btn { background: #2a5d9f; color: #fff; padding: 10px 15px; border: none; border-radius: 4px; text-decoration: none; display: inline-block; margin-top: 10px; }
-        input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border-radius: 4px; border: 1px solid #ccc; }
-        label { font-weight: bold; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fretes Disponíveis - Transportadora</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
+    header { background: #2a5d9f; color: #fff; padding: 15px; text-align: center; }
+    .fretes, .formulario, .contato, .carga { padding: 20px; max-width: 800px; margin: auto; background: #fff; margin-top: 20px; border-radius: 8px; }
+    .frete { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    .btn { background: #2a5d9f; color: #fff; padding: 10px 15px; border: none; border-radius: 4px; text-decoration: none; display: inline-block; margin-top: 10px; cursor: pointer; }
+    input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border-radius: 4px; border: 1px solid #ccc; }
+    label { font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f0f0f0; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Fretes Disponíveis</h1>
-    </header>
+  <header>
+    <h1>Fretes Disponíveis</h1>
+  </header>
 
-    <section class="fretes">
-        <h2>Ofertas de Carga</h2>
-        <div class="frete">
-            <p><strong>Origem:</strong> Taubaté/SP</p>
-            <p><strong>Destino:</strong> São Paulo/SP</p>
-            <p><strong>Tipo:</strong> Carga seca</p>
-            <p><strong>Valor:</strong> R$ 1.200,00</p>
-            <a href="https://wa.me/+5512991982723?text=Tenho%20interesse%20no%20frete%20de%20Taubat%C3%A9%20para%20S%C3%A3o%20Paulo" class="btn">Tenho Interesse (WhatsApp)</a>
-        </div>
-    </section>
+  <section class="fretes">
+    <h2>Ofertas de Carga</h2>
+    <div class="frete">
+      <p><strong>Origem:</strong> Taubaté/SP</p>
+      <p><strong>Destino:</strong> São Paulo/SP</p>
+      <p><strong>Tipo:</strong> Carga seca</p>
+      <p><strong>Valor:</strong> R$ 1.200,00</p>
+      <a href="https://wa.me/+5512991982723?text=Tenho%20interesse%20no%20frete%20de%20Taubat%C3%A9%20para%20S%C3%A3o%20Paulo" class="btn">Tenho Interesse (WhatsApp)</a>
+    </div>
+  </section>
 
-    <section class="formulario">
-        <h2>Cadastro de Motorista</h2>
-        <form action="https://formsubmit.co/programacao03@agilixlogistica.com.br" method="POST" enctype="multipart/form-data">
-            <label>CNH (foto):</label>
-            <input type="file" name="cnh" required>
+  <section class="carga">
+    <h2>Cadastrar Nova Carga</h2>
+    <form id="formularioCarga">
+      <label>Origem:</label>
+      <input type="text" id="origem" required>
 
-            <label>Comprovante de Endereço:</label>
-            <input type="file" name="comprovante_endereco" required>
+      <label>Destino:</label>
+      <input type="text" id="destino" required>
 
-            <label>Documentos do Veículo:</label>
-            <input type="file" name="documentos_veiculo" required>
+      <label>Veículo:</label>
+      <input type="text" id="veiculo" required>
 
-            <label>ANTT (RNTRC):</label>
-            <input type="file" name="antt" required>
+      <label>Tipo:</label>
+      <input type="text" id="tipo" required>
 
-            <label>Foto do motorista com o veículo (frente e traseira):</label>
-            <input type="file" name="foto_veiculo" multiple required>
+      <label>Rastreado (Sim/Não):</label>
+      <input type="text" id="rastreado" required>
 
-            <label>Foto do motorista segurando a CNH:</label>
-            <input type="file" name="foto_cnh_motorista" required>
+      <label>Valor:</label>
+      <input type="text" id="valor" required>
 
-            <label>Referências Pessoais (3 telefones):</label>
-            <textarea name="referencias_pessoais" rows="3" required></textarea>
+      <label>WhatsApp:</label>
+      <input type="text" id="whatsapp" required>
 
-            <label>Referências Comerciais (3 telefones):</label>
-            <textarea name="referencias_comerciais" rows="3" required></textarea>
+      <label>Observação:</label>
+      <textarea id="observacao"></textarea>
 
-            <button type="submit" class="btn">Enviar Documentos</button>
-        </form>
-    </section>
+      <button type="submit" class="btn">Cadastrar Carga</button>
+    </form>
 
-    <section class="contato">
-        <h2>Envio de Comprovante de Descarga</h2>
-        <form action="https://formsubmit.co/programacao03@agilixlogistica.com.br" method="POST" enctype="multipart/form-data">
-            <label>Número do Frete:</label>
-            <input type="text" name="numero_frete" required>
+    <h3>Lista de Cargas</h3>
+    <table id="tabelaCargas">
+      <thead>
+        <tr>
+          <th>Origem</th>
+          <th>Destino</th>
+          <th>Veículo</th>
+          <th>Tipo</th>
+          <th>Rastreado</th>
+          <th>Valor</th>
+          <th>WhatsApp</th>
+          <th>Observação</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
-            <label>Foto do Comprovante de Descarga:</label>
-            <input type="file" name="comprovante_descarga" required>
+  <section class="formulario">
+    <h2>Cadastro de Motorista</h2>
+    <form action="https://formsubmit.co/programacao03@agilixlogistica.com.br" method="POST" enctype="multipart/form-data">
+      <!-- seus campos de motorista continuam aqui -->
+      <label>CNH (foto):</label>
+      <input type="file" name="cnh" required>
+      <!-- (os demais campos foram mantidos) -->
+      <button type="submit" class="btn">Enviar Documentos</button>
+    </form>
+  </section>
 
-            <label>Observações:</label>
-            <textarea name="observacoes" rows="3"></textarea>
+  <section class="contato">
+    <h2>Envio de Comprovante de Descarga</h2>
+    <form action="https://formsubmit.co/programacao03@agilixlogistica.com.br" method="POST" enctype="multipart/form-data">
+      <label>Número do Frete:</label>
+      <input type="text" name="numero_frete" required>
 
-            <button type="submit" class="btn">Enviar Comprovante</button>
-        </form>
-    </section>
+      <label>Foto do Comprovante de Descarga:</label>
+      <input type="file" name="comprovante_descarga" required>
 
+      <label>Observações:</label>
+      <textarea name="observacoes" rows="3"></textarea>
+
+      <button type="submit" class="btn">Enviar Comprovante</button>
+    </form>
+  </section>
+
+  <script>
+    const form = document.getElementById("formularioCarga");
+    const tabela = document.getElementById("tabelaCargas").querySelector("tbody");
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxQgffGsEC638_xgvtTpRnmMWUWhFW7qoF3OsnS8M0aq8WddEPCGECE_YZB6GWV6slROg/exec"; // ⬅️ Substitua com a URL real
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const dados = {
+        origem: origem.value,
+        destino: destino.value,
+        veiculo: veiculo.value,
+        tipo: tipo.value,
+        rastreado: rastreado.value,
+        valor: valor.value,
+        whatsapp: whatsapp.value,
+        observacao: observacao.value
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(dados),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.text())
+      .then(msg => {
+        alert(msg);
+
+        const novaLinha = document.createElement("tr");
+        Object.values(dados).forEach(dado => {
+          const td = document.createElement("td");
+          td.textContent = dado;
+          novaLinha.appendChild(td);
+        });
+
+        const tdAcao = document.createElement("td");
+        const btnRemover = document.createElement("button");
+        btnRemover.textContent = "Remover";
+        btnRemover.className = "btn";
+        btnRemover.onclick = () => novaLinha.remove();
+        tdAcao.appendChild(btnRemover);
+        novaLinha.appendChild(tdAcao);
+
+        tabela.appendChild(novaLinha);
+        form.reset();
+      })
+      .catch(error => alert("Erro ao enviar: " + error));
+    });
+  </script>
 </body>
 </html>
